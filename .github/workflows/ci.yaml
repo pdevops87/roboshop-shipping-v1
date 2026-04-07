@@ -18,35 +18,35 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build with Maven
         run: mvn clean package
-  test:
-    runs-on: self-hosted
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-      # Runs a set of commands using the runners shell
-      - name: Run mvn test
-        run: echo mvn test
-  docker:
-    needs: test
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v4
-      - name: ecr login
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u4j6q5s8
-      - name: build docker image
-        run: docker build -t public.ecr.aws/u4j6q5s8/shipping:v1 .
-      - name: push to aws ecr
-        run: docker push public.ecr.aws/u4j6q5s8/shipping:v1
-
-  dev:
-    needs: docker
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v4
-        with:
-        repository: https://github.com/pdevops87/roboshop-helm-v1
-      - name: connect to kubernetes api through kubeconfig
-        run: echo aws eks update-kubeconfig --name dev
+#  test:
+#    runs-on: self-hosted
+#    steps:
+#      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#      - uses: actions/checkout@v4
+#      # Runs a set of commands using the runners shell
+#      - name: Run mvn test
+#        run: echo mvn test
+#  docker:
+#    needs: test
+#    runs-on: self-hosted
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: ecr login
+#        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u4j6q5s8
+#      - name: build docker image
+#        run: docker build -t public.ecr.aws/u4j6q5s8/shipping:v1 .
+#      - name: push to aws ecr
+#        run: docker push public.ecr.aws/u4j6q5s8/shipping:v1
+#
+#  dev:
+#    needs: docker
+#    runs-on: self-hosted
+#    steps:
+#      - uses: actions/checkout@v4
+#        with:
+#        repository: https://github.com/pdevops87/roboshop-helm-v1
+#      - name: connect to kubernetes api through kubeconfig
+#        run: echo aws eks update-kubeconfig --name dev
 
 
 
