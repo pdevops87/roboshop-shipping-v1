@@ -1,4 +1,4 @@
-FROM                 docker.io/maven:3.9-amazoncorretto-21-alpine As build
+FROM                 docker.io/maven:3.9-amazoncorretto-21-alpine AS build
 RUN                  mkdir /app
 WORKDIR              /app
 COPY                 pom.xml /app/
@@ -7,6 +7,6 @@ RUN                  mvn clean package
 
 FROM               docker.io/openjdk:11-ea-9-jre-slim
 WORKDIR            /app
-COPY              --from=build /app/target/shipping.jar /app/shipping.jar
-CMD                ["java", "-jar", "shipping.jar"]
+COPY               --from=build /app/target/shipping-1.0.jar /app/shipping.jar
+CMD                ["java", "-jar", "/app/shipping.jar"]
 
