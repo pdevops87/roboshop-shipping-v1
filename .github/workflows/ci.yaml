@@ -55,7 +55,7 @@ jobs:
       - name: connect to kubernetes api through kubeconfig
         run:  echo aws eks update-kubeconfig --name dev
       - name: deploy app
-        run: echo helm upgrade -i frontend -f pass-values-templates/frontend.yaml
+        run: echo helm upgrade -i shipping -f pass-values-templates/shipping.yaml
 
 
 
