@@ -45,16 +45,17 @@ jobs:
         run: docker build -t public.ecr.aws/u4j6q5s8/shipping:v1 .
       - name: push to aws ecr
         run: docker push public.ecr.aws/u4j6q5s8/shipping:v1
-#
-#  dev:
-#    needs: docker
-#    runs-on: self-hosted
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#        repository: https://github.com/pdevops87/roboshop-helm-v1
-#      - name: connect to kubernetes api through kubeconfig
-#        run: echo aws eks update-kubeconfig --name dev
+  dev:
+    needs: docker
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: pdevops87/roboshop-helm-v1
+      - name: connect to kubernetes api through kubeconfig
+        run:  echo aws eks update-kubeconfig --name dev
+      - name: deploy app
+        run: echo helm upgrade -i frontend -f pass-values-templates/frontend.yaml
 
 
 
