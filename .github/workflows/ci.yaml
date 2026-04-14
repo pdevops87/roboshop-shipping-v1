@@ -7,4 +7,4 @@ jobs:
     uses: pdevops87/reusable-github-actions/.github/workflows/ci.yml@main
     with:
       appName: shipping
-      appType: maven
+      apptype: maven
