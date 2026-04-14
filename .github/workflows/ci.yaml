@@ -1,65 +1,10 @@
-# This is a basic workflow to help you get started with Actions
-
-name: shipping
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
-
 jobs:
-  build:
-    runs-on: self-hosted
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-      # Runs a set of commands using the runners shell
-      - name: Build with Maven
-        run: mvn clean package
-      - uses: actions/upload-artifact@v4
-        with:
-          name: shipping-jar
-          path: target/shipping-1.0.jar
-  test:
-    runs-on: self-hosted
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-      # Runs a set of commands using the runners shell
-      - name: Run mvn test
-        run: echo mvn test
-  docker:
-    needs: test
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v4
-      - name: docker login
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u4j6q5s8
-      - uses: actions/download-artifact@v8
-        with:
-          name: shipping-jar
-          path: ./
-      - name: build docker image
-        run: docker build -t public.ecr.aws/u4j6q5s8/shipping:v1 .
-      - name: push to aws ecr
-        run: docker push public.ecr.aws/u4j6q5s8/shipping:v1
-  dev:
-    needs: docker
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: pdevops87/roboshop-helm-v1
-      - name: connect to kubernetes api through kubeconfig
-        run:  echo aws eks update-kubeconfig --name dev
-      - name: deploy app
-        run: echo helm upgrade -i shipping -f pass-values-templates/shipping.yaml
-
-
-
-
-
-
-
+  call-workflow-passing-data:
+    uses: pdevops87/reusable-github-actions/.github/workflows/ci.yml@main
+    with:
+      appName: shipping
+      appType: maven
