@@ -16,6 +16,6 @@
 FROM               docker.io/openjdk:11-ea-9-jre-slim
 RUN                mkdir /app
 WORKDIR             /app
-COPY               ./shipping-1.0.jar  /app/shipping.jar
+COPY               ./target/shipping-1.0.jar  /app/shipping.jar
 CMD                ["java", "-jar", "/app/shipping.jar"]
 
