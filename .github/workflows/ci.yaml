@@ -1,7 +1,4 @@
 name: shipping
-permissions:
-  id-token: write  
-  contents: read 
 on:
   push:
     branches: ["main"]
@@ -14,3 +11,5 @@ jobs:
     with:
       appName: shipping
       apptype: maven
+    secrets: inherit
+    
